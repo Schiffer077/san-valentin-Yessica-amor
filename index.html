@@ -110,14 +110,14 @@ button{
 
 /* CONTADOR DE VIDA DE AMOR */
 #contadorContainer{
-    position: fixed;       /* pegado al borde inferior */
-    bottom: 5px;           /* cerca del borde */
-    width: 100%;           /* ocupa todo el ancho */
-    text-align: center;    /* centrado */
-    color: #000000;        /* letra negra */
-    font-weight: 900;       /* más gruesa */
-    font-size: 0.7rem;     /* pequeño y discreto */
-    z-index: 5;            /* encima de todo */
+    position: fixed;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+    color: #000000;
+    font-weight: 900;
+    font-size: 0.7rem;
+    z-index: 5;
 }
 
 /* CORAZONES FLOTANDO */
@@ -160,6 +160,30 @@ button{
     animation:floatUpEmoji 3s linear forwards;
     z-index:5;
     bottom:0;
+}
+
+/* POP-UP EN FORMA DE CORAZÓN */
+.heart-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 250px;
+    height: 250px;
+    background: #ff4d6d;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 50% 50% 50% 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+    padding: 15px;
+    line-height: 1.3;
 }
 
 /* Animaciones */
@@ -206,16 +230,20 @@ button{
 <div class="overlay"></div>
 
 <div class="container">
-    <h1>💘Amorchis💘...
-        ¿Quieres ser mi San Valentín, este y los que restan de nuestra vida? 💖</h1>
+    <h1>💘Amorchis💘...<br>¿Quieres ser mi San Valentín, este y los que restan de nuestra vida? 💖</h1>
 
     <div class="buttons">
-        <button id="yesBtn" onclick="alert('¡Sí! ❤️‍🔥 Gracias por hacer que mi corazón lata más fuerte cada día, más y más. Recuerda que donde tú vayas, yo iré… si tú saltas, yo salto ❤️')">Sí 💘</button>
+        <button id="yesBtn">Sí 💘</button>
         <button id="noBtn">No 😢</button>
     </div>
 
     <!-- Contador de vida de amor -->
     <div id="contadorContainer"></div>
+</div>
+
+<!-- POP-UP CORAZÓN -->
+<div id="heartPopup" class="heart-popup">
+💘 ¡Sí! ❤️‍🔥 Gracias por hacer que mi corazón lata más fuerte cada día, más y más. Recuerda que donde tú vayas, yo iré… si tú saltas, yo salto ❤️ 💘
 </div>
 
 <!-- Música -->
@@ -260,6 +288,20 @@ noBtn.addEventListener("click", () => {
         document.body.appendChild(emoji);
         setTimeout(()=> emoji.remove(), 3000);
     }
+});
+
+/* POP-UP CORAZÓN AL DAR CLICK EN SÍ */
+const yesBtn = document.getElementById("yesBtn");
+const heartPopup = document.getElementById("heartPopup");
+
+yesBtn.addEventListener("click", () => {
+    heartPopup.style.opacity = 1;
+    heartPopup.style.pointerEvents = 'auto';
+
+    setTimeout(() => {
+        heartPopup.style.opacity = 0;
+        heartPopup.style.pointerEvents = 'none';
+    }, 5000); // desaparece después de 5 segundos
 });
 
 /* CONTADOR DE VIDA DE AMOR */
