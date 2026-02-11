@@ -16,7 +16,7 @@
 html, body{
     height:100%;
     overflow:hidden;
-    background: #ffe6e6; /* rosa clarito */
+    background: #ffe6e6;
 }
 
 /* ===== SLIDER DE FONDO ===== */
@@ -105,10 +105,7 @@ button{
 #noBtn{
     background:white;
     color:#ff4d6d;
-}
-
-#noBtn:hover{
-    position:absolute;
+    transition: left 0.3s ease, top 0.3s ease; /* transición suave */
 }
 
 /* ===== CORAZONES FLOTANDO ===== */
@@ -204,44 +201,48 @@ setInterval(()=>{
     slides[index].classList.add("active");
 }, 4000);
 
-/* ===== BOTÓN QUE HUYE SUAVEMENTE ===== */
+/* ===== BOTÓN “NO” CONTROLADO ===== */
 const noBtn = document.getElementById("noBtn");
 let moving = false;
 
-noBtn.addEventListener("mouseover", () => {
+const moveNoBtn = () => {
     if(moving) return;
     moving = true;
 
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
+
     const maxX = window.innerWidth - btnWidth;
-    const maxY = window.innerHeight - btnHeight - 50; // evitar overlay de botones
+    const minY = window.innerHeight - 200; // solo área inferior
+    const maxY = window.innerHeight - btnHeight - 50;
 
     noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
+    noBtn.style.top = Math.random() * (maxY - minY) + minY + "px";
 
-    setTimeout(()=> moving = false, 200); // espera 0.2s antes de otro movimiento
-});
+    setTimeout(()=> moving = false, 400); // espera antes de siguiente movimiento
+};
+
+// Para PC
+noBtn.addEventListener("mouseover", moveNoBtn);
+
+// Para móviles
+noBtn.addEventListener("touchstart", moveNoBtn);
 
 /* ===== CORAZONES FLOTANDO ===== */
 setInterval(()=>{
     const heart = document.createElement('div');
     heart.classList.add('heart');
     
-    // posición horizontal aleatoria
     heart.style.left = Math.random() * window.innerWidth + "px";
     
-    // tamaño aleatorio
     const size = 15 + Math.random() * 15;
     heart.style.width = size + "px";
     heart.style.height = size + "px";
     
-    // duración animación aleatoria
     heart.style.animationDuration = (4 + Math.random() * 3) + "s";
     
     document.body.appendChild(heart);
     
-    // eliminar después de animación
     setTimeout(()=>{
         heart.remove();
     }, 7000);
