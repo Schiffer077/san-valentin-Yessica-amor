@@ -26,16 +26,17 @@ html, body{
     height:100%;
     top:0;
     left:0;
-    z-index:-2;
+    z-index:0; /* ahora encima del body, debajo del overlay */
 }
 
 .background-slider img{
     position:absolute;
     width:100%;
     height:100%;
-    object-fit: cover; /* ahora llena toda la pantalla */
+    object-fit: cover; /* llena toda la pantalla */
     opacity:0;
     transition:opacity 1.5s ease-in-out;
+    z-index:0; /* asegurar que las imágenes estén visibles */
 }
 
 .background-slider img.active{
@@ -52,7 +53,7 @@ html, body{
         rgba(255,192,203,0.2),
         rgba(255,182,193,0.3)
     );
-    z-index:-1;
+    z-index:1; /* encima del slider pero debajo del contenido */
 }
 
 /* ===== CONTENIDO ===== */
@@ -66,6 +67,7 @@ html, body{
     text-align:center;
     color:#ff1e4d; /* texto rojo romántico */
     padding:20px;
+    z-index:2; /* encima de todo */
 }
 
 h1{
@@ -128,7 +130,7 @@ button{
 <div class="overlay"></div>
 
 <div class="container">
-    <h1>💖 Yessica... ¿Quieres ser mi San Valentín? 💖</h1>
+    <h1>💖 Yessica... ¿Quieres ser mi San Valentín, este y el de todas las vidas? 💖</h1>
 
     <div class="buttons">
         <button id="yesBtn" onclick="alert('¡Sabía que dirías que sí ❤️!')">Sí 💘</button>
