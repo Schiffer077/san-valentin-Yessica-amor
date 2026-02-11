@@ -64,7 +64,7 @@ html, body{
     flex-direction:column;
     align-items:center;
     text-align:center;
-    z-index:4; /* encima de todo */
+    z-index:4;
     padding:0 20px;
 }
 
@@ -120,7 +120,7 @@ button{
     transform:rotate(45deg);
     animation:floatUp 5s linear forwards;
     z-index:3;
-    bottom:0; /* empieza desde abajo */
+    bottom:0;
 }
 
 .heart::before,
@@ -204,11 +204,23 @@ setInterval(()=>{
     slides[index].classList.add("active");
 }, 4000);
 
-/* ===== BOTÓN QUE HUYE ===== */
+/* ===== BOTÓN QUE HUYE SUAVEMENTE ===== */
 const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover",()=>{
-    noBtn.style.top=Math.random()*80+"%";
-    noBtn.style.left=Math.random()*80+"%";
+let moving = false;
+
+noBtn.addEventListener("mouseover", () => {
+    if(moving) return;
+    moving = true;
+
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight - 50; // evitar overlay de botones
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+
+    setTimeout(()=> moving = false, 200); // espera 0.2s antes de otro movimiento
 });
 
 /* ===== CORAZONES FLOTANDO ===== */
