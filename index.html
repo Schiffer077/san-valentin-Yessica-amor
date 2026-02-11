@@ -110,11 +110,14 @@ button{
 
 /* CONTADOR DE VIDA DE AMOR */
 #contadorContainer{
-    margin-top:10px; /* menos espacio arriba */
-    color:#ff4d6d;
-    font-weight:bold;
-    font-size:0.9rem; /* más pequeño */
-    text-align:center;
+    position: fixed;       /* para que quede siempre pegado al borde */
+    bottom: 5px;           /* muy cerca del borde inferior */
+    width: 100%;           /* ocupa todo el ancho */
+    text-align: center;    /* centrado horizontal */
+    color: #ff4d6d;        /* color rosita */
+    font-weight: bold;
+    font-size: 0.7rem;     /* más pequeño y discreto */
+    z-index: 5;            /* encima de todo pero sin molestar */
 }
 
 /* CORAZONES FLOTANDO */
