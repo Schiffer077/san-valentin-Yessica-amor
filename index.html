@@ -16,7 +16,7 @@
 html, body{
     height:100%;
     overflow:hidden;
-    background:black;
+    background: #ffe6e6; /* rosa clarito */
 }
 
 /* ===== SLIDER DE FONDO ===== */
@@ -33,8 +33,7 @@ html, body{
     position:absolute;
     width:100%;
     height:100%;
-    object-fit:contain; /* Perfecto para fotos verticales */
-    background:black;
+    object-fit: cover; /* ahora llena toda la pantalla */
     opacity:0;
     transition:opacity 1.5s ease-in-out;
 }
@@ -43,15 +42,15 @@ html, body{
     opacity:1;
 }
 
-/* ===== OVERLAY OSCURO ELEGANTE ===== */
+/* ===== OVERLAY ROMÁNTICO ===== */
 .overlay{
     position:fixed;
     width:100%;
     height:100%;
-    background:linear-gradient(
-        rgba(0,0,0,0.7),
-        rgba(0,0,0,0.4),
-        rgba(0,0,0,0.7)
+    background: linear-gradient(
+        rgba(255,182,193,0.3),
+        rgba(255,192,203,0.2),
+        rgba(255,182,193,0.3)
     );
     z-index:-1;
 }
@@ -65,13 +64,13 @@ html, body{
     justify-content:center;
     align-items:center;
     text-align:center;
-    color:white;
+    color:#ff1e4d; /* texto rojo romántico */
     padding:20px;
 }
 
 h1{
-    font-size:2.2rem;
-    margin-bottom:20px;
+    font-size:2.5rem;
+    margin-bottom:25px;
     animation:fadeIn 2s ease-in-out;
 }
 
@@ -84,9 +83,10 @@ button{
     margin:10px;
     border:none;
     border-radius:25px;
-    font-size:1rem;
+    font-size:1.1rem;
     cursor:pointer;
     transition:0.3s;
+    font-weight:bold;
 }
 
 #yesBtn{
@@ -106,7 +106,6 @@ button{
 
 #noBtn:hover{
     position:absolute;
-    left:Math.random()*80+"%";
 }
 
 /* Animación */
@@ -132,7 +131,7 @@ button{
     <h1>💖 Yessica... ¿Quieres ser mi San Valentín? 💖</h1>
 
     <div class="buttons">
-        <button id="yesBtn" onclick="alert('Sabía que dirías que sí ❤️')">Sí 💘</button>
+        <button id="yesBtn" onclick="alert('¡Sabía que dirías que sí ❤️!')">Sí 💘</button>
         <button id="noBtn">No 😢</button>
     </div>
 </div>
@@ -156,7 +155,6 @@ setInterval(()=>{
 /* ===== BOTÓN QUE HUYE ===== */
 const noBtn = document.getElementById("noBtn");
 noBtn.addEventListener("mouseover",()=>{
-    noBtn.style.position="absolute";
     noBtn.style.top=Math.random()*80+"%";
     noBtn.style.left=Math.random()*80+"%";
 });
