@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>¿Quieres ser mi San Valentín?</title>
+<title>Para ti Yessica</title>
 
 <style>
 *{
@@ -64,7 +64,7 @@ html, body{
     flex-direction:column;
     align-items:center;
     text-align:center;
-    z-index:4; /* encima de todo */
+    z-index:4;
     padding:0 20px;
 }
 
@@ -106,6 +106,15 @@ button{
     background:white;
     color:#ff4d6d;
     cursor:pointer;
+}
+
+/* CONTADOR DE VIDA DE AMOR */
+#contadorContainer{
+    margin-top:20px;
+    color:#ff4d6d;
+    font-weight:bold;
+    font-size:1.2rem;
+    text-align:center;
 }
 
 /* CORAZONES FLOTANDO */
@@ -195,13 +204,16 @@ button{
 <div class="overlay"></div>
 
 <div class="container">
-    <h1>              💘Yessica💘...
+    <h1>💘Yessica💘...
         ¿Quieres ser mi San Valentín, este y los que restan de nuestra vida? 💖</h1>
 
     <div class="buttons">
-        <button id="yesBtn" onclick="alert('¡SÍ!❤️‍🔥 Gracias por hacer mi corazon latir más fuerte cada día más y más, recuerda tu saltas YO salto❤️')">Sí 💘</button>
+        <button id="yesBtn" onclick="alert('¡SÍ!❤️‍🔥 Gracias por hacer mi corazón latir más fuerte cada día más y más, recuerda que si tú saltas, yo salto ❤️')">Sí 💘</button>
         <button id="noBtn">No 😢</button>
     </div>
+
+    <!-- Contador de vida de amor -->
+    <div id="contadorContainer"></div>
 </div>
 
 <!-- Música -->
@@ -237,7 +249,6 @@ const noBtn = document.getElementById("noBtn");
 const emojis = ["🥹","😂","🥺","😭","😢","😫","😞","🙁"];
 
 noBtn.addEventListener("click", () => {
-    // generar varios emojis por click
     for(let i=0; i<5; i++){
         const emoji = document.createElement('div');
         emoji.classList.add('floatingEmoji');
@@ -248,6 +259,29 @@ noBtn.addEventListener("click", () => {
         setTimeout(()=> emoji.remove(), 3000);
     }
 });
+
+/* CONTADOR DE VIDA DE AMOR */
+const inicio = new Date("2024-12-18T00:00:00");
+const contadorContainer = document.getElementById("contadorContainer");
+
+function actualizarContador() {
+    const ahora = new Date();
+    let diff = Math.floor((ahora - inicio) / 1000); // segundos
+
+    const dias = Math.floor(diff / (24*3600));
+    diff %= 24*3600;
+    const horas = Math.floor(diff / 3600);
+    diff %= 3600;
+    const minutos = Math.floor(diff / 60);
+    const segundos = diff % 60;
+
+    contadorContainer.textContent = `⏳ Contador de nuestra vida de amor: ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos 💖`;
+}
+
+// actualizar cada segundo
+setInterval(actualizarContador, 1000);
+// actualizar al cargar
+actualizarContador();
 </script>
 
 </body>
