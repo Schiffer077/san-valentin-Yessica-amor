@@ -16,10 +16,10 @@
 html, body{
     height:100%;
     overflow:hidden;
-    background: #ffe6e6; /* rosa clarito */
+    background: #ffe6e6;
 }
 
-/* ===== SLIDER DE FONDO ===== */
+/* SLIDER DE FONDO */
 .background-slider{
     position:fixed;
     width:100%;
@@ -42,7 +42,7 @@ html, body{
     opacity:1;
 }
 
-/* ===== OVERLAY ROMÁNTICO ===== */
+/* OVERLAY ROMÁNTICO */
 .overlay{
     position:fixed;
     width:100%;
@@ -55,63 +55,11 @@ html, body{
     z-index:1;
 }
 
-/* ===== CONTENIDO ABAJO ===== */
-.container{
-    position:absolute;
-    bottom:50px;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    z-index:4; /* encima de todo */
-    padding:0 20px;
-}
-
-h1{
-    font-size:1.8rem;
-    font-weight:600;
-    color:#ff4d6d;
-    margin-bottom:20px;
-    animation:fadeIn 2s ease-in-out;
-    line-height:1.3;
-}
-
-.buttons{
-    display:flex;
-    gap:15px;
-}
-
-button{
-    padding:12px 25px;
-    border:none;
-    border-radius:25px;
-    font-size:1.1rem;
+/* CONTENIDO ABAJO */
     cursor:pointer;
-    transition:0.3s;
-    font-weight:bold;
 }
 
-#yesBtn{
-    background:#ff4d6d;
-    color:white;
-}
-
-#yesBtn:hover{
-    background:#ff1e4d;
-    transform:scale(1.1);
-}
-
-#noBtn{
-    background:white;
-    color:#ff4d6d;
-}
-
-#noBtn:hover{
-    position:absolute;
-}
-
-/* ===== CORAZONES FLOTANDO ===== */
+/* CORAZONES FLOTANDO */
 .heart{
     position:absolute;
     width:20px;
@@ -120,7 +68,7 @@ button{
     transform:rotate(45deg);
     animation:floatUp 5s linear forwards;
     z-index:3;
-    bottom:0; /* empieza desde abajo */
+    bottom:0;
 }
 
 .heart::before,
@@ -144,7 +92,16 @@ button{
     left:-10px;
 }
 
-/* Animación corazones */
+/* EMOJIS FLOTANDO */
+.floatingEmoji{
+    position:absolute;
+    font-size:24px;
+    animation:floatUpEmoji 3s linear forwards;
+    z-index:5;
+    bottom:0;
+}
+
+/* Animaciones */
 @keyframes floatUp{
     0%{
         transform:translateY(0) rotate(45deg);
@@ -156,7 +113,17 @@ button{
     }
 }
 
-/* Animación texto */
+@keyframes floatUpEmoji{
+    0%{
+        transform:translateY(0) scale(1);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-400px) scale(1.3);
+        opacity:0;
+    }
+}
+
 @keyframes fadeIn{
     from{opacity:0; transform:translateY(-20px);}
     to{opacity:1; transform:translateY(0);}
@@ -194,46 +161,44 @@ button{
 </audio>
 
 <script>
-/* ===== SLIDER AUTOMÁTICO ===== */
+/* SLIDER AUTOMÁTICO */
 let slides = document.querySelectorAll(".background-slider img");
 let index = 0;
-
 setInterval(()=>{
     slides[index].classList.remove("active");
     index = (index + 1) % slides.length;
     slides[index].classList.add("active");
 }, 4000);
 
-/* ===== BOTÓN QUE HUYE ===== */
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover",()=>{
-    noBtn.style.top=Math.random()*80+"%";
-    noBtn.style.left=Math.random()*80+"%";
-});
-
-/* ===== CORAZONES FLOTANDO ===== */
+/* CORAZONES AUTOMÁTICOS */
 setInterval(()=>{
     const heart = document.createElement('div');
     heart.classList.add('heart');
-    
-    // posición horizontal aleatoria
     heart.style.left = Math.random() * window.innerWidth + "px";
-    
-    // tamaño aleatorio
     const size = 15 + Math.random() * 15;
     heart.style.width = size + "px";
     heart.style.height = size + "px";
-    
-    // duración animación aleatoria
     heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-    
     document.body.appendChild(heart);
-    
-    // eliminar después de animación
-    setTimeout(()=>{
-        heart.remove();
-    }, 7000);
+    setTimeout(()=> heart.remove(), 7000);
 }, 500);
+
+/* EMOJIS AL DAR CLICK EN NO */
+const noBtn = document.getElementById("noBtn");
+const emojis = ["🥹","😂","🥺","😭","😢","😫","😞","🙁"];
+
+noBtn.addEventListener("click", () => {
+    // generar varios emojis por click
+    for(let i=0; i<5; i++){
+        const emoji = document.createElement('div');
+        emoji.classList.add('floatingEmoji');
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * window.innerWidth + "px";
+        emoji.style.fontSize = (20 + Math.random() * 20) + "px";
+        document.body.appendChild(emoji);
+        setTimeout(()=> emoji.remove(), 3000);
+    }
+});
 </script>
 
 </body>
