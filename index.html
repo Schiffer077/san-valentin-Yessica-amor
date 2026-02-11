@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Quieres ser mi San Valentín?</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    text-align: center;
+    color: white;
+}
+
+.container {
+    position: relative;
+    top: 30vh;
+    animation: fadeIn 2s ease-in-out;
+}
+
+h1 { font-size: 2.8em; }
+h2 { font-weight: 300; }
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 15px;
+    transition: 0.3s;
+}
+
+.yes {
+    background: #ff2e63;
+    color: white;
+}
+
+.yes:hover {
+    transform: scale(1.1);
+}
+
+.no {
+    background: #333;
+    color: white;
+    position: absolute;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.heart {
+    position: absolute;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    from {transform: translateY(100vh);}
+    to {transform: translateY(-10vh);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Jessica 💖</h1>
+    <h2>¿Quieres ser mi San Valentín? 🌹</h2>
+    <button class="yes" onclick="acepto()">Sí, acepto 💘</button>
+    <button class="no" onmouseover="moverBoton(this)">No 😜</button>
+</div>
+
+<script>
+function acepto() {
+    document.body.innerHTML = `
+    <div style="margin-top:30vh;">
+        <h1>Sabía que dirías que sí 😍</h1>
+        <h2>Te amo muchísimo 💕</h2>
+        <h2>Prometo hacerte muy feliz 💜</h2>
+    </div>
+    `;
+}
+
+function moverBoton(btn) {
+    btn.style.top = Math.random() * window.innerHeight + "px";
+    btn.style.left = Math.random() * window.innerWidth + "px";
+}
+
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}, 500);
+</script>
+
+</body>
+</html>
