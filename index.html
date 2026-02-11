@@ -6,147 +6,160 @@
 <title>¿Quieres ser mi San Valentín?</title>
 
 <style>
-.background-slider {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: -2;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Arial', sans-serif;
 }
 
-.background-slider img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    animation: fade 20s infinite;
+html, body{
+    height:100%;
+    overflow:hidden;
+    background:black;
 }
 
-.background-slider img:nth-child(1) { animation-delay: 0s; }
-.background-slider img:nth-child(2) { animation-delay: 5s; }
-.background-slider img:nth-child(3) { animation-delay: 10s; }
-.background-slider img:nth-child(4) { animation-delay: 15s; }
-
-@keyframes fade {
-    0% { opacity: 0; }
-    5% { opacity: 1; }
-    25% { opacity: 1; }
-    30% { opacity: 0; }
-    100% { opacity: 0; }
+/* ===== SLIDER DE FONDO ===== */
+.background-slider{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:-2;
 }
 
-.overlay {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: -1;
+.background-slider img{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:contain; /* Perfecto para fotos verticales */
+    background:black;
+    opacity:0;
+    transition:opacity 1.5s ease-in-out;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-   
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-    text-align: center;
-    color: white;
+.background-slider img.active{
+    opacity:1;
 }
 
-.container {
-    position: relative;
-    top: 30vh;
-    animation: fadeIn 2s ease-in-out;
+/* ===== OVERLAY OSCURO ELEGANTE ===== */
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.4),
+        rgba(0,0,0,0.7)
+    );
+    z-index:-1;
 }
 
-h1 { font-size: 2.8em; }
-h2 { font-weight: 300; }
-
-button {
-    padding: 15px 30px;
-    font-size: 18px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    margin: 15px;
-    transition: 0.3s;
+/* ===== CONTENIDO ===== */
+.container{
+    position:relative;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    padding:20px;
 }
 
-.yes {
-    background: #ff2e63;
-    color: white;
+h1{
+    font-size:2.2rem;
+    margin-bottom:20px;
+    animation:fadeIn 2s ease-in-out;
 }
 
-.yes:hover {
-    transform: scale(1.1);
+.buttons{
+    margin-top:20px;
 }
 
-.no {
-    background: #333;
-    color: white;
-    position: absolute;
+button{
+    padding:12px 25px;
+    margin:10px;
+    border:none;
+    border-radius:25px;
+    font-size:1rem;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-20px);}
-    to {opacity: 1; transform: translateY(0);}
+#yesBtn{
+    background:#ff4d6d;
+    color:white;
 }
 
-.heart {
-    position: absolute;
-    animation: float 6s linear infinite;
+#yesBtn:hover{
+    background:#ff1e4d;
+    transform:scale(1.1);
 }
 
-@keyframes float {
-    from {transform: translateY(100vh);}
-    to {transform: translateY(-10vh);}
+#noBtn{
+    background:white;
+    color:#ff4d6d;
+}
+
+#noBtn:hover{
+    position:absolute;
+    left:Math.random()*80+"%";
+}
+
+/* Animación */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(-20px);}
+    to{opacity:1; transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
+
+<!-- SLIDER -->
 <div class="background-slider">
-    <img src="foto1.jpg">
+    <img src="foto1.jpg" class="active">
     <img src="foto2.jpg">
     <img src="foto3.jpg">
 </div>
 
-<div class="overlay"></div>  
+<div class="overlay"></div>
+
 <div class="container">
-   
-    <h1>Yessica la mas enojoncita 💖</h1>
-    <h2>¿Quieres ser mi San Valentín, este y todo los de las demas vidas, mi chiquis? 🌹</h2>
-    <button class="yes" onclick="acepto()">Sí, acepto 💘</button>
-    <button class="no" onmouseover="moverBoton(this)">No 😜</button>
+    <h1>💖 Yessica... ¿Quieres ser mi San Valentín? 💖</h1>
+
+    <div class="buttons">
+        <button id="yesBtn" onclick="alert('Sabía que dirías que sí ❤️')">Sí 💘</button>
+        <button id="noBtn">No 😢</button>
+    </div>
 </div>
 
+<!-- Música -->
+<audio autoplay loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-function acepto() {
-    document.body.innerHTML = `
-    <div style="margin-top:30vh;">
-        <h1>Sabía que dirías que sí 😍</h1>
-        <h2>Te amo muchísimo 💕</h2>
-        <h2>Prometo hacerte muy feliz 💜</h2>
-    </div>
-    `;
-}
+/* ===== SLIDER AUTOMÁTICO ===== */
+let slides = document.querySelectorAll(".background-slider img");
+let index = 0;
 
-function moverBoton(btn) {
-    btn.style.top = Math.random() * window.innerHeight + "px";
-    btn.style.left = Math.random() * window.innerWidth + "px";
-}
+setInterval(()=>{
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+}, 4000);
 
-setInterval(() => {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 20 + 20) + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-}, 500);
+/* ===== BOTÓN QUE HUYE ===== */
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+    noBtn.style.position="absolute";
+    noBtn.style.top=Math.random()*80+"%";
+    noBtn.style.left=Math.random()*80+"%";
+});
 </script>
 
 </body>
