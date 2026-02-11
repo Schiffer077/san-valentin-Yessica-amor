@@ -57,15 +57,14 @@ html, body{
 
 /* CONTENIDO ABAJO */
 .container{
-    position:absolute;
-    bottom:50px;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    z-index:4;
-    padding:0 20px;
+    position: fixed;       /* pegado al borde inferior */
+    bottom: 5px;           /* cerca del borde */
+    width: 100%;           /* ocupa todo el ancho */
+    text-align: center;    /* centrado */
+    color: #000000;        /* letra negra */
+    font-weight: 900;       /* más gruesa */
+    font-size: 0.7rem;     /* pequeño y discreto */
+    z-index: 5;            /* encima de todo */
 }
 
 h1{
