@@ -110,14 +110,14 @@ button{
 
 /* CONTADOR DE VIDA DE AMOR */
 #contadorContainer{
-    position: fixed;
-    bottom: 5px;
-    width: 100%;
-    text-align: center;
-    color: #000000;
-    font-weight: 900;
-    font-size: 0.7rem;
-    z-index: 5;
+    position: fixed;       /* pegado al borde inferior */
+    bottom: 5px;           /* cerca del borde */
+    width: 100%;           /* ocupa todo el ancho */
+    text-align: center;    /* centrado */
+    color: #000000;        /* letra negra */
+    font-weight: 900;       /* más gruesa */
+    font-size: 0.7rem;     /* pequeño y discreto */
+    z-index: 5;            /* encima de todo */
 }
 
 /* CORAZONES FLOTANDO */
@@ -160,53 +160,6 @@ button{
     animation:floatUpEmoji 3s linear forwards;
     z-index:5;
     bottom:0;
-}
-
-/* POP-UP CORAZÓN */
-.heart-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-    width: 200px;
-    height: 200px;
-    background-color: #ff4d6d;
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    padding: 15px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s, transform 0.3s;
-}
-
-.heart-popup::before,
-.heart-popup::after {
-    content: '';
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    background-color: #ff4d6d;
-    border-radius: 50%;
-}
-
-.heart-popup::before {
-    top: -100px;
-    left: 0;
-}
-
-.heart-popup::after {
-    top: 0;
-    left: -100px;
-}
-
-.heart-popup.show {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.1);
 }
 
 /* Animaciones */
@@ -253,10 +206,11 @@ button{
 <div class="overlay"></div>
 
 <div class="container">
-    <h1>💘Amorchis💘... ¿Quieres ser mi San Valentín, este y los que restan de nuestra vida? 💖</h1>
+    <h1>💘Amorchis💘...
+        ¿Quieres ser mi San Valentín, este y los que restan de nuestra vida? 💖</h1>
 
     <div class="buttons">
-        <button id="yesBtn">Sí 💘</button>
+        <button id="yesBtn" onclick="alert('¡Sí! ❤️‍🔥 Gracias por hacer que mi corazón lata más fuerte cada día, más y más. Recuerda que donde tú vayas, yo iré… si tú saltas, yo salto ❤️')">Sí 💘</button>
         <button id="noBtn">No 😢</button>
     </div>
 
@@ -308,23 +262,6 @@ noBtn.addEventListener("click", () => {
     }
 });
 
-/* POP-UP CORAZÓN AL DAR CLICK EN SÍ */
-const yesBtn = document.getElementById("yesBtn");
-
-// crear el pop-up
-const heartPopup = document.createElement('div');
-heartPopup.classList.add('heart-popup');
-heartPopup.textContent = "¡Sí! ❤️‍🔥 Gracias por hacer que mi corazón lata más fuerte cada día. Recuerda: donde tú vayas, yo iré… si tú saltas, yo salto ❤️";
-document.body.appendChild(heartPopup);
-
-yesBtn.addEventListener("click", () => {
-    heartPopup.classList.add('show');  // mostrar el corazón
-    // desaparecer después de 5 segundos
-    setTimeout(() => {
-        heartPopup.classList.remove('show');
-    }, 5000);
-});
-
 /* CONTADOR DE VIDA DE AMOR */
 const inicio = new Date("2024-12-21T00:00:00");
 const contadorContainer = document.getElementById("contadorContainer");
@@ -340,10 +277,12 @@ function actualizarContador() {
     const minutos = Math.floor(diff / 60);
     const segundos = diff % 60;
 
-    contadorContainer.textContent = `⏳ Vida de Amor: ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos ⏳`;
+    contadorContainer.textContent = `⏳ Time / Love: ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos ⏳`;
 }
 
+// actualizar cada segundo
 setInterval(actualizarContador, 1000);
+// actualizar al cargar
 actualizarContador();
 </script>
 
