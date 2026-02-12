@@ -196,15 +196,23 @@ button{
 
 <!-- SLIDER -->
 <div class="background-slider">
-    <img src="foto13.jpg" class="active">
+    <img src="foto1.jpg" class="active">
+    <img src="foto2.jpg">
+    <img src="foto6.jpg">
+    <img src="foto7.jpg">
+    <img src="foto9.jpg">
 </div>
 
 <div class="overlay"></div>
 
 <div class="container">
-    <h1>🔩Pensando... pronto te dare la respuesta🔩</h1>
+    <h1>💘Amorchis💘...
+        ¿Quieres ser mi San Valentín, este y los que restan de nuestra vida? 💖</h1>
 
- 
+    <div class="buttons">
+        <button id="yesBtn" onclick="alert('¡Sí! ❤️‍🔥 Gracias por hacer que mi corazón estalle de felicidad. Recuerda que donde tú vayas, yo iré... si tú saltas, yo salto ❤️')">Sí 💘</button>
+        <button id="noBtn">No 😢</button>
+    </div>
 
     <!-- Contador de vida de amor -->
     <div id="contadorContainer"></div>
@@ -216,7 +224,96 @@ button{
 </audio>
 
 <script>
-/* SLIDER AUTOMÁTICO */
+
+// ============================
+// ESTADO ÚNICO
+// ============================
+
+if(localStorage.getItem("decisionFinal")){
+    mostrarResultado(localStorage.getItem("decisionFinal"));
+}
+
+// ============================
+// BOTONES
+// ============================
+
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
+yesBtn.addEventListener("click", ()=>{
+    guardarDecision("si");
+});
+
+noBtn.addEventListener("click", ()=>{
+    guardarDecision("no");
+});
+
+function guardarDecision(valor){
+    localStorage.setItem("decisionFinal", valor);
+    mostrarResultado(valor);
+}
+
+// ============================
+// MOSTRAR RESULTADO
+// ============================
+
+function mostrarResultado(valor){
+
+    document.querySelector(".container").innerHTML = "";
+
+    if(valor === "si"){
+
+        document.querySelector(".container").innerHTML = `
+        <h1 style="color:white;">
+        Gracias por seguir eligiéndome ❤️<br><br>
+        Sé que he sido distante.<br>
+        Sé que te he hecho sentir sola algunas veces.<br><br>
+        No quiero perderte.<br>
+        No quiero que sientas que ya no me importas.<br><br>
+        Te amo. Y estoy dispuesto a demostrarlo con hechos.
+        </h1>
+        `;
+
+    } else {
+
+        document.querySelector(".container").innerHTML = `
+        <h1 style="color:white;">
+        Entiendo tu decisión.<br><br>
+        Gracias por lo que vivimos.<br>
+        Me hiciste mejor hombre.<br><br>
+        Siempre voy a desearte lo mejor.
+        </h1>
+        <div id="countdown" style="font-size:30px; margin-top:20px;"></div>
+        `;
+
+        iniciarCuentaRegresiva();
+    }
+}
+
+// ============================
+// CUENTA REGRESIVA SI ES NO
+// ============================
+
+function iniciarCuentaRegresiva(){
+    let tiempo = 15;
+    const countdown = document.getElementById("countdown");
+
+    const intervalo = setInterval(()=>{
+        countdown.textContent = "Este enlace desaparecerá en " + tiempo + " segundos...";
+        tiempo--;
+
+        if(tiempo < 0){
+            clearInterval(intervalo);
+            document.body.innerHTML = "<h1 style='color:white; text-align:center; margin-top:40vh;'>El capítulo terminó.</h1>";
+        }
+
+    },1000);
+}
+
+// ============================
+// SLIDER ORIGINAL
+// ============================
+
 let slides = document.querySelectorAll(".background-slider img");
 let index = 0;
 setInterval(()=>{
@@ -225,42 +322,16 @@ setInterval(()=>{
     slides[index].classList.add("active");
 }, 4000);
 
-/* CORAZONES AUTOMÁTICOS */
-setInterval(()=>{
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.style.left = Math.random() * window.innerWidth + "px";
-    const size = 15 + Math.random() * 15;
-    heart.style.width = size + "px";
-    heart.style.height = size + "px";
-    heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-    document.body.appendChild(heart);
-    setTimeout(()=> heart.remove(), 7000);
-}, 500);
+// ============================
+// CONTADOR ORIGINAL
+// ============================
 
-/* EMOJIS AL DAR CLICK EN NO */
-const noBtn = document.getElementById("noBtn");
-const emojis = ["🥹","😂","🥺","😭","😢","😫","😞","🙁","😤","☠️"];
-
-noBtn.addEventListener("click", () => {
-    for(let i=0; i<5; i++){
-        const emoji = document.createElement('div');
-        emoji.classList.add('floatingEmoji');
-        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji.style.left = Math.random() * window.innerWidth + "px";
-        emoji.style.fontSize = (20 + Math.random() * 20) + "px";
-        document.body.appendChild(emoji);
-        setTimeout(()=> emoji.remove(), 3000);
-    }
-});
-
-/* CONTADOR DE VIDA DE AMOR */
 const inicio = new Date("2024-12-21T00:00:00");
 const contadorContainer = document.getElementById("contadorContainer");
 
 function actualizarContador() {
     const ahora = new Date();
-    let diff = Math.floor((ahora - inicio) / 1000); // segundos
+    let diff = Math.floor((ahora - inicio) / 1000);
 
     const dias = Math.floor(diff / (24*3600));
     diff %= 24*3600;
@@ -269,13 +340,42 @@ function actualizarContador() {
     const minutos = Math.floor(diff / 60);
     const segundos = diff % 60;
 
-    contadorContainer.textContent = `⏳ Time / Love: ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos ⏳`;
+    contadorContainer.textContent =
+    `⏳ ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos contigo ⏳`;
 }
 
-// actualizar cada segundo
 setInterval(actualizarContador, 1000);
-// actualizar al cargar
 actualizarContador();
+
+// ============================
+// BLOQUEAR RECARGA
+// ============================
+
+window.onbeforeunload = function(){
+    return "Esta decisión no puede cambiarse.";
+};
+    
+// ============================
+// MODO SECRETO (RESET)
+// ============================
+
+let tapCount = 0;
+const titulo = document.querySelector("h1");
+
+titulo.addEventListener("click", () => {
+    tapCount++;
+
+    if(tapCount >= 5){
+        localStorage.removeItem("decisionFinal");
+        alert("Modo desarrollador activado 😎 Reiniciando...");
+        location.reload();
+    }
+
+    setTimeout(() => {
+        tapCount = 0;
+    }, 2000);
+});
+    
 </script>
 
 </body>
