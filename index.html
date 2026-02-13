@@ -196,6 +196,12 @@ function cambiarImagenes(lista, blancoNegro=false, rosita=false){
     },4000);
 }
 
+// ================= ELIMINAR ESTRELLITAS =================
+function eliminarEstrellitas(){
+    const stars = document.querySelectorAll(".star");
+    stars.forEach(s => s.remove());
+}
+
 // ================= FLUJO =================
 
 function pantallaInstructivo(){
@@ -221,10 +227,11 @@ function pantallaPregunta(){
         <button id="noBtn" onclick="decision('no')">No 😢</button>
     `;
 
-    iniciarEstrellitas(); // inicia lluvia de estrellitas
+    iniciarEstrellitas(); // inicia lluvia de estrellitas solo en pantalla 2
 }
 
 function decision(valor){
+    eliminarEstrellitas(); // eliminamos estrellitas de pantalla 2
     localStorage.setItem("decisionFinal",valor);
     document.getElementById("mainContainer").innerHTML="";
 
@@ -238,8 +245,8 @@ function decision(valor){
         </h1>
         `;
     }else{
-        cambiarImagenes(imagenesNo,true);
-        iniciarLluvia();
+        cambiarImagenes(imagenesNo, true);
+        iniciarLluvia(); // lluvia azul solo en "no"
         iniciarCuentaRegresiva();
         document.getElementById("mainContainer").innerHTML=`
         <h1>
@@ -267,16 +274,14 @@ function iniciarLluvia(){
 
 function iniciarEstrellitas(){
     for(let i=0;i<50;i++){
-        const star=document.createElement("div");
-        star.textContent="✨";
-        star.style.position="fixed";
-        star.style.left=Math.random()*window.innerWidth+"px";
-        star.style.top="-50px";
-        star.style.fontSize=(10+Math.random()*15)+"px";
-        star.style.opacity=0.8;
-        star.style.zIndex=2;
-        star.style.pointerEvents="none";
-        star.style.animation="caerEstrella "+(2+Math.random()*3)+"s linear infinite";
+        const star = document.createElement("div");
+        star.classList.add("star"); // clase para poder eliminar
+        star.textContent = "✨";
+        star.style.left = Math.random()*window.innerWidth+"px";
+        star.style.top = "-50px";
+        star.style.fontSize = (10+Math.random()*15)+"px";
+        star.style.opacity = 0.8;
+        star.style.animation = "caerEstrella "+(2+Math.random()*3)+"s linear infinite";
         document.body.appendChild(star);
     }
 }
