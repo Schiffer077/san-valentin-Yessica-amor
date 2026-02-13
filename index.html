@@ -52,7 +52,7 @@ html, body{
 
 .container{
     position:absolute;
-    bottom:30px; /* todos los botones más abajo */
+    bottom:30px; 
     width:100%;
     text-align:center;
     z-index:3;
@@ -62,7 +62,7 @@ html, body{
 h1{
     color:white;
     margin-bottom:20px;
-    font-size:1.4rem;
+    font-size:1.1rem; /* letra más pequeña para pantalla sí */
 }
 
 button{
@@ -95,7 +95,7 @@ button{
     z-index:2;
 }
 
-/* ESTRELLAS */
+/* ESTRELLAS y CORAZONES */
 .star{
     position:fixed;
     color:white;
@@ -106,6 +106,23 @@ button{
     animation:caerEstrella 3s linear infinite;
 }
 
+.corazon{
+    position:fixed;
+    font-size:20px;
+    z-index:4;
+    pointer-events:none;
+    animation:subirCorazon linear forwards;
+}
+
+.mensaje{
+    position:fixed;
+    color:pink;
+    font-weight:bold;
+    z-index:4;
+    pointer-events:none;
+    animation:subirMensaje linear forwards;
+}
+
 @keyframes rainFall{
     0%{transform:translateY(-100px);}
     100%{transform:translateY(100vh);}
@@ -114,6 +131,16 @@ button{
 @keyframes caerEstrella{
     0%{transform:translateY(-50px);}
     100%{transform:translateY(100vh);}
+}
+
+@keyframes subirCorazon{
+    0%{transform:translateY(100vh);}
+    100%{transform:translateY(-50px);}
+}
+
+@keyframes subirMensaje{
+    0%{transform:translateY(100vh);}
+    100%{transform:translateY(-50px);}
 }
 
 </style>
@@ -132,76 +159,32 @@ button{
 <script>
 
 // ================= IMÁGENES =================
-
-// Pantalla 1 (instructivo)
-const imagenesInicio = [
-    "foto102.jpg"
-];
-
-// Pantalla 2 (pregunta)
+const imagenesInicio = ["foto102.jpg"];
 const imagenesPregunta = [
-    "foto202.jpg",
-    "foto7.jpg",
-    "foto2.jpg",
-    "foto6.jpg",
-    "foto2010.jpg",
-    "foto208.jpg",
-    "foto204.jpg",
-    "foto201.jpg",
-    "foto1.jpg"
+    "foto202.jpg","foto7.jpg","foto2.jpg","foto6.jpg","foto2010.jpg",
+    "foto208.jpg","foto204.jpg","foto201.jpg","foto1.jpg"
 ];
-
-// Si dice sí
 const imagenesSi = [
-
-    "foto203.jpg",
-    "foto301.jpg",
-    "foto4.jpg",
-    "foto303.jpg",
-    "foto306.jpg",
-    "foto305.jpg",
-    "foto9.jpg",
-    "foto402.jpg",
-    "foto403.jpg",
-    "foto405.jpg",
-    "foto406.jpg",
-    "foto407.jpg",
-    "foto411.jpg",
-    "foto412.jpg",
-    "foto416.jpg",
-    "foto417.jpg",
-    "triste7.jpg"
-    
+    "foto203.jpg","foto301.jpg","foto4.jpg","foto303.jpg","foto306.jpg",
+    "foto305.jpg","foto9.jpg","foto402.jpg","foto403.jpg","foto405.jpg",
+    "foto406.jpg","foto407.jpg","foto411.jpg","foto412.jpg","foto416.jpg",
+    "foto417.jpg","triste7.jpg"
 ];
-
-// Si dice no
 const imagenesNo = [
-   "triste7.jpg", 
-   "foto9.jpg",
-   "foto305.jpg",
-   "foto306.jpg",
-   "foto303.jpg",
-   "foto4.jpg",
-   "foto301.jpg",
-   "foto203.jpg",
-   "foto402.jpg",
-   "foto403.jpg",
-   "foto405.jpg",
-   "foto406.jpg",
-   "foto407.jpg",
-   "foto411.jpg",
-   "foto412.jpg",
-   "foto416.jpg",
-   "foto417.jpg",
-   "triste7.jpg"
+    "triste7.jpg","foto9.jpg","foto305.jpg","foto306.jpg","foto303.jpg",
+    "foto4.jpg","foto301.jpg","foto203.jpg","foto402.jpg","foto403.jpg",
+    "foto405.jpg","foto406.jpg","foto407.jpg","foto411.jpg","foto412.jpg",
+    "foto416.jpg","foto417.jpg","triste7.jpg"
 ];
 
 let slides = [];
 let index = 0;
 let sliderInterval;
+let palabraInterval;
+let imagenFinalMostrada = false;
 
-// ================= FUNCIÓN CAMBIAR IMÁGENES =================
-function cambiarImagenes(lista, blancoNegro=false, rosita=false){
+// ================= FUNCIONES =================
+function cambiarImagenes(lista, blancoNegro=false, rosita=false, callback=null){
     clearInterval(sliderInterval);
     const slider = document.getElementById("slider");
     slider.innerHTML = "";
@@ -210,40 +193,36 @@ function cambiarImagenes(lista, blancoNegro=false, rosita=false){
         const imagen = document.createElement("img");
         imagen.src = img;
 
-        if(blancoNegro){
-            imagen.style.filter="grayscale(100%) brightness(70%)";
-        } else if(rosita){
-            // Rosa más suave y romántico
-            imagen.style.filter="brightness(90%) sepia(15%) saturate(150%) hue-rotate(-10deg)";
-        } else {
-            imagen.style.filter="none";
-        }
+        if(blancoNegro) imagen.style.filter="grayscale(100%) brightness(70%)";
+        else if(rosita) imagen.style.filter="brightness(90%) sepia(15%) saturate(150%) hue-rotate(-10deg)";
+        else imagen.style.filter="none";
 
         if(i===0) imagen.classList.add("active");
         slider.appendChild(imagen);
     });
 
     slides = document.querySelectorAll(".background-slider img");
-    index=0;
+    index = 0;
 
-    sliderInterval=setInterval(()=>{
+    sliderInterval = setInterval(()=>{
         slides[index].classList.remove("active");
-        index=(index+1)%slides.length;
+        index++;
+        if(index >= slides.length){
+            clearInterval(sliderInterval);
+            if(callback) callback();
+            return;
+        }
         slides[index].classList.add("active");
-    },4000);
+    }, 4000);
 }
 
-// ================= ELIMINAR ESTRELLITAS =================
 function eliminarEstrellitas(){
-    const stars = document.querySelectorAll(".star");
-    stars.forEach(s => s.remove());
+    document.querySelectorAll(".star,.corazon,.mensaje").forEach(e=>e.remove());
 }
 
 // ================= FLUJO =================
-
 function pantallaInstructivo(){
     cambiarImagenes(imagenesInicio);
-
     document.getElementById("mainContainer").innerHTML=`
         <h1></h1>
         <button style="background:#ffb6c1; color:white;" onclick="pantallaPregunta()">
@@ -253,50 +232,84 @@ function pantallaInstructivo(){
 }
 
 function pantallaPregunta(){
-    cambiarImagenes(imagenesPregunta, false, true); // imágenes rositas suaves
-
+    cambiarImagenes(imagenesPregunta, false, true);
     document.getElementById("mainContainer").innerHTML=`
-        <h1>
-        <br>
-        ¿Quieres seguir escribiendo esta historia conmigo?
-        </h1>
+        <h1><br>¿Quieres seguir escribiendo esta historia conmigo?</h1>
         <button id="yesBtn" onclick="decision('si')">Sí🫂</button>
         <button id="noBtn" onclick="decision('no')">No 🍃</button>
     `;
-
-    iniciarEstrellitas(); // inicia lluvia de estrellitas solo en pantalla 2
+    iniciarEstrellitas();
 }
 
 function decision(valor){
-    eliminarEstrellitas(); // eliminamos estrellitas de pantalla 2
-    localStorage.setItem("decisionFinal",valor);
+    eliminarEstrellitas();
+    localStorage.setItem("decisionFinal", valor);
     document.getElementById("mainContainer").innerHTML="";
 
     if(valor==="si"){
-        cambiarImagenes(imagenesSi);
-        document.getElementById("mainContainer").innerHTML=`
-        <h1>
-        Gracias por seguir eligiéndome ❤️<br><br>
-        No quiero perderte.<br>
-        Voy a demostrarlo con hechos.
-        </h1>
-        `;
+        iniciarPantallaSi();
     }else{
         cambiarImagenes(imagenesNo, true);
-        iniciarLluvia(); // lluvia azul solo en "no"
+        iniciarLluvia();
         iniciarCuentaRegresiva();
         document.getElementById("mainContainer").innerHTML=`
-        <h1>
-        Entiendo tu decisión.<br><br>
-        Gracias por lo vivido.
-        </h1>
+        <h1>Entiendo tu decisión.<br><br>Gracias por lo vivido.</h1>
         <div id="countdown" style="margin-top:20px;font-size:20px;"></div>
         `;
     }
 }
 
-// ================= LLUVIA =================
+// ================= PANTALLA “SÍ” =================
+function iniciarPantallaSi(){
+    const palabras = [
+        "Te amo","Te quiero","Gracias por seguir eligiéndome",
+        "Te quiero hacer un bebé","Cacémonos","Te haré feliz",
+        "Vive conmigo","Eres perfecta","Mi niña hermosa"
+    ];
 
+    cambiarImagenes(imagenesSi, false, false, mostrarPantallaFinal);
+
+    // Iniciar corazones flotantes
+    setInterval(()=>{
+        const c = document.createElement("div");
+        c.classList.add("corazon");
+        c.textContent = "💖";
+        c.style.left = Math.random()*window.innerWidth+"px";
+        c.style.fontSize = (15+Math.random()*15)+"px";
+        c.style.animationDuration = (3+Math.random()*3)+"s";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),5000);
+    },500);
+
+    // Iniciar palabras flotantes
+    palabraInterval = setInterval(()=>{
+        const m = document.createElement("div");
+        m.classList.add("mensaje");
+        m.textContent = palabras[Math.floor(Math.random()*palabras.length)];
+        m.style.left = Math.random()*window.innerWidth+"px";
+        m.style.fontSize = (12+Math.random()*10)+"px";
+        m.style.animationDuration = (4+Math.random()*3)+"s";
+        document.body.appendChild(m);
+        setTimeout(()=>m.remove(),5000);
+    },700);
+}
+
+// ================= PANTALLA FINAL =================
+function mostrarPantallaFinal(){
+    // eliminar palabras flotantes
+    clearInterval(palabraInterval);
+
+    // mostrar imagen final con texto
+    const slider = document.getElementById("slider");
+    slider.innerHTML = `<img src="foto_final.jpg" class="active" style="width:100%;height:100%;object-fit:cover;">`;
+
+    // mensaje en medio
+    document.getElementById("mainContainer").innerHTML=`
+        <h1 style="font-size:1.5rem;margin-top:40vh;color:white;">Escríbeme en WhatsApp<br>MQC</h1>
+    `;
+}
+
+// ================= LLUVIA =================
 function iniciarLluvia(){
     for(let i=0;i<80;i++){
         const drop=document.createElement("div");
@@ -308,11 +321,10 @@ function iniciarLluvia(){
 }
 
 // ================= ESTRELLITAS =================
-
 function iniciarEstrellitas(){
     for(let i=0;i<50;i++){
         const star = document.createElement("div");
-        star.classList.add("star"); // clase para poder eliminar
+        star.classList.add("star");
         star.textContent = "✨";
         star.style.left = Math.random()*window.innerWidth+"px";
         star.style.top = "-50px";
@@ -324,7 +336,6 @@ function iniciarEstrellitas(){
 }
 
 // ================= CUENTA REGRESIVA =================
-
 function iniciarCuentaRegresiva(){
     let tiempo=15;
     const interval=setInterval(()=>{
@@ -340,7 +351,6 @@ function iniciarCuentaRegresiva(){
 }
 
 // ================= INICIO =================
-
 pantallaInstructivo();
 
 </script>
