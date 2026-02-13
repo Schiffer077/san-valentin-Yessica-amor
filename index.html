@@ -1,1 +1,292 @@
-1
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti Yessica</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Arial', sans-serif;
+}
+
+html, body{
+    height:100%;
+    overflow:hidden;
+    background:#ffe6e6;
+    transition:background 1s ease;
+}
+
+/* SLIDER */
+.background-slider{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:0;
+}
+
+.background-slider img{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    transition:opacity 1.5s ease-in-out, filter 1s ease;
+}
+
+.background-slider img.active{
+    opacity:1;
+}
+
+/* OVERLAY */
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        rgba(255,182,193,0.3),
+        rgba(255,192,203,0.2),
+        rgba(255,182,193,0.3)
+    );
+    z-index:1;
+    transition:background 1s ease;
+}
+
+/* CONTENIDO */
+.container{
+    position:absolute;
+    bottom:50px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    z-index:4;
+    padding:0 20px;
+}
+
+h1{
+    font-size:1.4rem;
+    font-weight:600;
+    color:#ff4d6d;
+    margin-bottom:20px;
+    line-height:1.4;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:25px;
+    font-size:1rem;
+    cursor:pointer;
+    font-weight:bold;
+    background:#ff4d6d;
+    color:white;
+}
+
+/* CONTADOR */
+#contadorContainer{
+    position:fixed;
+    bottom:5px;
+    width:100%;
+    text-align:center;
+    color:#000;
+    font-weight:900;
+    font-size:0.7rem;
+    z-index:5;
+}
+
+/* ====== LLUVIA ====== */
+.rain{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    pointer-events:none;
+    z-index:3;
+}
+
+.drop{
+    position:absolute;
+    width:2px;
+    height:15px;
+    background:rgba(0,150,255,0.6);
+    animation:rainFall linear infinite;
+}
+
+@keyframes rainFall{
+    0%{transform:translateY(-100px);}
+    100%{transform:translateY(100vh);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-slider">
+    <img src="foto101.jpg" class="active">
+</div>
+
+<div class="overlay"></div>
+
+<div class="container" id="mainContainer"></div>
+
+<audio autoplay loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+// ===== SLIDER =====
+let slides=document.querySelectorAll(".background-slider img");
+let index=0;
+let sliderInterval;
+
+function iniciarSlider(){
+    sliderInterval=setInterval(()=>{
+        slides[index].classList.remove("active");
+        index=(index+1)%slides.length;
+        slides[index].classList.add("active");
+    },4000);
+}
+iniciarSlider();
+
+function cambiarImagenes(lista){
+    clearInterval(sliderInterval);
+    const slider=document.querySelector(".background-slider");
+    slider.innerHTML="";
+    lista.forEach((img,i)=>{
+        const imagen=document.createElement("img");
+        imagen.src=img;
+        if(i===0) imagen.classList.add("active");
+        slider.appendChild(imagen);
+    });
+    slides=document.querySelectorAll(".background-slider img");
+    index=0;
+    iniciarSlider();
+}
+
+// ===== FLUJO =====
+const mainContainer=document.getElementById("mainContainer");
+
+if(localStorage.getItem("decisionFinal")){
+    mostrarResultado(localStorage.getItem("decisionFinal"));
+}else{
+    mostrarInstructivo();
+}
+
+function mostrarInstructivo(){
+    mainContainer.innerHTML=`
+    <h1>
+    </h1>
+    <div class="buttons">
+        <button onclick="mostrarDecision()">Aceptar y continuar ❤️</button>
+    </div>
+    `;
+}
+
+function mostrarDecision(){
+    mainContainer.innerHTML=`
+    <h1>
+    💘Amorchis💘...<br>
+    ¿Quieres seguir escribiendo esta historia conmigo? 💖
+    </h1>
+    <div class="buttons">
+        <button onclick="guardarDecision('si')">Sí 💘</button>
+        <button onclick="guardarDecision('no')">No 😢</button>
+    </div>
+    <div id="contadorContainer"></div>
+    `;
+}
+
+function guardarDecision(valor){
+    localStorage.setItem("decisionFinal",valor);
+    mostrarResultado(valor);
+}
+
+function mostrarResultado(valor){
+
+    mainContainer.innerHTML="";
+
+    if(valor==="si"){
+
+        mainContainer.innerHTML=`
+        <h1 style="color:white;">
+        Gracias por darme otra oportunidad ❤️<br><br>
+        Te amo y voy a demostrarlo con hechos.
+        </h1>
+        `;
+
+    }else{
+
+        activarEscenarioTriste();
+
+        mainContainer.innerHTML=`
+        <h1 style="color:white;">
+        Entiendo tu decisión...<br><br>
+        Gracias por todo lo vivido.
+        </h1>
+        <div id="countdown" style="font-size:22px;margin-top:20px;"></div>
+        `;
+
+        iniciarCuentaRegresiva();
+    }
+}
+
+// ===== ESCENARIO TRISTE =====
+function activarEscenarioTriste(){
+
+    document.body.style.background="#bfbfbf";
+    document.querySelector(".overlay").style.background=
+    "rgba(150,150,150,0.4)";
+
+    slides.forEach(img=>{
+        img.style.filter="grayscale(100%) brightness(80%)";
+    });
+
+    const rain=document.createElement("div");
+    rain.classList.add("rain");
+    document.body.appendChild(rain);
+
+    for(let i=0;i<120;i++){
+        const drop=document.createElement("div");
+        drop.classList.add("drop");
+        drop.style.left=Math.random()*100+"%";
+        drop.style.animationDuration=(0.5+Math.random()*0.7)+"s";
+        drop.style.opacity=Math.random();
+        rain.appendChild(drop);
+    }
+}
+
+// ===== CUENTA REGRESIVA =====
+function iniciarCuentaRegresiva(){
+    let tiempo=15;
+    const countdown=document.getElementById("countdown");
+
+    const intervalo=setInterval(()=>{
+        countdown.textContent="Este enlace desaparecerá en "+tiempo+" segundos...";
+        tiempo--;
+
+        if(tiempo<0){
+            clearInterval(intervalo);
+            document.body.innerHTML=
+            "<h1 style='color:white;text-align:center;margin-top:40vh;'>El capítulo terminó.</h1>";
+        }
+    },1000);
+}
+
+</script>
+
+</body>
+</html>
