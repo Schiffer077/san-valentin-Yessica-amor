@@ -52,7 +52,7 @@ html, body{
 
 .container{
     position:absolute;
-    bottom:30px;
+    bottom:120px; /* todos los botones más abajo */
     width:100%;
     text-align:center;
     z-index:3;
@@ -95,8 +95,24 @@ button{
     z-index:2;
 }
 
+/* ESTRELLAS */
+.star{
+    position:fixed;
+    color:white;
+    opacity:0.8;
+    z-index:2;
+    pointer-events:none;
+    font-size:12px;
+    animation:caerEstrella 3s linear infinite;
+}
+
 @keyframes rainFall{
     0%{transform:translateY(-100px);}
+    100%{transform:translateY(100vh);}
+}
+
+@keyframes caerEstrella{
+    0%{transform:translateY(-50px);}
     100%{transform:translateY(100vh);}
 }
 
@@ -147,7 +163,8 @@ let slides = [];
 let index = 0;
 let sliderInterval;
 
-function cambiarImagenes(lista, blancoNegro=false){
+// ================= FUNCIÓN CAMBIAR IMÁGENES =================
+function cambiarImagenes(lista, blancoNegro=false, rosita=false){
     clearInterval(sliderInterval);
     const slider = document.getElementById("slider");
     slider.innerHTML = "";
@@ -155,9 +172,16 @@ function cambiarImagenes(lista, blancoNegro=false){
     lista.forEach((img,i)=>{
         const imagen = document.createElement("img");
         imagen.src = img;
+
         if(blancoNegro){
             imagen.style.filter="grayscale(100%) brightness(70%)";
+        } else if(rosita){
+            // Rosa más suave y romántico
+            imagen.style.filter="brightness(90%) sepia(15%) saturate(150%) hue-rotate(-10deg)";
+        } else {
+            imagen.style.filter="none";
         }
+
         if(i===0) imagen.classList.add("active");
         slider.appendChild(imagen);
     });
@@ -178,8 +202,7 @@ function pantallaInstructivo(){
     cambiarImagenes(imagenesInicio);
 
     document.getElementById("mainContainer").innerHTML=`
-        <h1>
-        </h1>
+        <h1></h1>
         <button style="background:#ffb6c1; color:white;" onclick="pantallaPregunta()">
             Aceptar y continuar ❤️
         </button>
@@ -187,7 +210,7 @@ function pantallaInstructivo(){
 }
 
 function pantallaPregunta(){
-    cambiarImagenes(imagenesPregunta);
+    cambiarImagenes(imagenesPregunta, false, true); // imágenes rositas suaves
 
     document.getElementById("mainContainer").innerHTML=`
         <h1>
@@ -197,16 +220,16 @@ function pantallaPregunta(){
         <button id="yesBtn" onclick="decision('si')">Sí 💘</button>
         <button id="noBtn" onclick="decision('no')">No 😢</button>
     `;
+
+    iniciarEstrellitas(); // inicia lluvia de estrellitas
 }
 
 function decision(valor){
-
     localStorage.setItem("decisionFinal",valor);
     document.getElementById("mainContainer").innerHTML="";
 
     if(valor==="si"){
         cambiarImagenes(imagenesSi);
-
         document.getElementById("mainContainer").innerHTML=`
         <h1>
         Gracias por seguir eligiéndome ❤️<br><br>
@@ -214,13 +237,10 @@ function decision(valor){
         Voy a demostrarlo con hechos.
         </h1>
         `;
-
     }else{
-
         cambiarImagenes(imagenesNo,true);
         iniciarLluvia();
         iniciarCuentaRegresiva();
-
         document.getElementById("mainContainer").innerHTML=`
         <h1>
         Entiendo tu decisión.<br><br>
@@ -240,6 +260,24 @@ function iniciarLluvia(){
         drop.style.left=Math.random()*window.innerWidth+"px";
         drop.style.animationDuration=(0.5+Math.random())+"s";
         document.body.appendChild(drop);
+    }
+}
+
+// ================= ESTRELLITAS =================
+
+function iniciarEstrellitas(){
+    for(let i=0;i<50;i++){
+        const star=document.createElement("div");
+        star.textContent="✨";
+        star.style.position="fixed";
+        star.style.left=Math.random()*window.innerWidth+"px";
+        star.style.top="-50px";
+        star.style.fontSize=(10+Math.random()*15)+"px";
+        star.style.opacity=0.8;
+        star.style.zIndex=2;
+        star.style.pointerEvents="none";
+        star.style.animation="caerEstrella "+(2+Math.random()*3)+"s linear infinite";
+        document.body.appendChild(star);
     }
 }
 
