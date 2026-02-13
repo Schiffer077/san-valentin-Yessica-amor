@@ -62,7 +62,7 @@ html, body{
 h1{
     color:white;
     margin-bottom:20px;
-    font-size:1.1rem; /* letra predeterminada para pantalla Sí */
+    font-size:1.1rem; /* letra predeterminada */
 }
 
 button{
@@ -148,7 +148,6 @@ button{
     0%{transform:translateY(100vh);}
     100%{transform:translateY(-50px);}
 }
-
 </style>
 </head>
 
@@ -187,7 +186,6 @@ let slides = [];
 let index = 0;
 let sliderInterval;
 let palabraInterval;
-let imagenFinalMostrada = false;
 
 // ================= FUNCIONES =================
 function cambiarImagenes(lista, blancoNegro=false, rosita=false, callback=null){
@@ -239,6 +237,9 @@ function pantallaInstructivo(){
 }
 
 function pantallaPregunta(){
+    // Si ya se tomó una decisión, no mostrar pregunta
+    if(localStorage.getItem("decisionFinal")) return;
+
     cambiarImagenes(imagenesPregunta, false, true);
     document.getElementById("mainContainer").innerHTML=`
         <h1><br>¿Quieres seguir escribiendo esta historia conmigo?.<br><br>En cuanto veas la imagen en negro contesta la pregunta.</h1>
@@ -249,8 +250,9 @@ function pantallaPregunta(){
 }
 
 function decision(valor){
-    eliminarEstrellitas();
+    if(localStorage.getItem("decisionFinal")) return; // Bloquea cambio de decisión
     localStorage.setItem("decisionFinal", valor);
+    eliminarEstrellitas();
     document.getElementById("mainContainer").innerHTML="";
 
     if(valor==="si"){
@@ -260,7 +262,7 @@ function decision(valor){
         iniciarLluvia();
         iniciarCuentaRegresiva();
         document.getElementById("mainContainer").innerHTML=`
-        <h1 style="font-size:0.9rem;color:white;">Entiendo tu decisión y disculpa por todo lo bueno y malo que vivimos.<br><br>Te llevare muy dentro de mi corazón mi amor, no tengo mas que decir, solo espera el final de contador.</h1>
+        <h1 style="font-size:0.9rem;color:white;">Entiendo tu decisión y disculpa por todo lo bueno y malo que vivimos.<br><br>Te llevare muy dentro de mi corazón mi amor, no tengo más que decir, solo espera el final de contador.</h1>
         <div id="countdown"></div>
         `;
     }
@@ -350,14 +352,43 @@ function iniciarCuentaRegresiva(){
         if(tiempo<0){
             clearInterval(interval);
             document.body.innerHTML=
-            "<h1 style='color:white;text-align:center;margin-top:40vh;'>El capítulo terminó, mandame por wahtsaap esto GOV y continuara la etapa de ya no hablarnos mas.<br><br>🤍Adios amor🤍</h1>";
+            "<h1 style='color:white;text-align:center;margin-top:40vh;'>El capítulo terminó, mandame por WhatsApp esto GOV y continuará la etapa de ya no hablarnos más.<br><br>🤍Adiós amor🤍</h1>";
         }
     },1000);
 }
 
-// ================= INICIO =================
-pantallaInstructivo();
+// ================= BOTÓN SECRETO DESARROLLADOR =================
+const devBtn = document.createElement("button");
+devBtn.style.position = "fixed";
+devBtn.style.top = "5px";
+devBtn.style.right = "5px";
+devBtn.style.width = "20px";
+devBtn.style.height = "20px";
+devBtn.style.opacity = "0.01"; // casi invisible
+devBtn.style.zIndex = "9999";
+devBtn.title = "Resetear flujo";
+devBtn.onclick = ()=>{
+    localStorage.removeItem("decisionFinal");
+    location.reload(); // recarga para reiniciar flujo
+};
+document.body.appendChild(devBtn);
 
+// ================= INICIO =================
+const decisionGuardada = localStorage.getItem("decisionFinal");
+if(decisionGuardada){
+    if(decisionGuardada === "si") iniciarPantallaSi();
+    else if(decisionGuardada === "no"){
+        cambiarImagenes(imagenesNo, true);
+        iniciarLluvia();
+        iniciarCuentaRegresiva();
+        document.getElementById("mainContainer").innerHTML=`
+            <h1 style="font-size:0.9rem;color:white;">Entiendo tu decisión y disculpa por todo lo bueno y malo que vivimos.<br><br>Te llevare muy dentro de mi corazón mi amor, no tengo más que decir, solo espera el final de contador.</h1>
+            <div id="countdown"></div>
+        `;
+    }
+}else{
+    pantallaInstructivo();
+}
 </script>
 
 </body>
