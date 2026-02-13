@@ -241,7 +241,7 @@ function pantallaInstructivo(){
 function pantallaPregunta(){
     cambiarImagenes(imagenesPregunta, false, true);
     document.getElementById("mainContainer").innerHTML=`
-        <h1><br>¿Quieres seguir escribiendo esta historia conmigo? en cuanto veas la imagen en negro contesta la pregunta</h1>
+        <h1><br>¿Quieres seguir escribiendo esta historia conmigo?.<br><br>En cuanto veas la imagen en negro contesta la pregunta.</h1>
         <button id="yesBtn" onclick="decision('si')">Sí🫂</button>
         <button id="noBtn" onclick="decision('no')">No 🍃</button>
     `;
