@@ -62,7 +62,7 @@ html, body{
 h1{
     color:white;
     margin-bottom:20px;
-    font-size:1.1rem; /* letra más pequeña para pantalla sí */
+    font-size:1.1rem; /* letra predeterminada para pantalla Sí */
 }
 
 button{
@@ -121,6 +121,12 @@ button{
     z-index:4;
     pointer-events:none;
     animation:subirMensaje linear forwards;
+}
+
+/* Pantalla No - contador más pequeño y blanco */
+#countdown{
+    font-size:14px;
+    color:white;
 }
 
 @keyframes rainFall{
@@ -222,7 +228,8 @@ function eliminarEstrellitas(){
 
 // ================= FLUJO =================
 function pantallaInstructivo(){
-    cambiarImagenes(imagenesInicio);
+    const slider = document.getElementById("slider");
+    slider.innerHTML = `<img src="foto102.jpg" class="active" style="width:100%;height:100%;object-fit:cover;">`; // Imagen fija
     document.getElementById("mainContainer").innerHTML=`
         <h1></h1>
         <button style="background:#ffb6c1; color:white;" onclick="pantallaPregunta()">
@@ -253,8 +260,8 @@ function decision(valor){
         iniciarLluvia();
         iniciarCuentaRegresiva();
         document.getElementById("mainContainer").innerHTML=`
-        <h1>Entiendo tu decisión y dislpa por todo lo bueno y malo que vivimos.<br><br>Te llevare muy dentro de mi corazón mi amor.</h1>
-        <div id="countdown" style="margin-top:20px;font-size:20px;"></div>
+        <h1 style="font-size:0.9rem;color:white;">Entiendo tu decisión y dislpa por todo lo bueno y malo que vivimos.<br><br>Te llevare muy dentro de mi corazón mi amor.</h1>
+        <div id="countdown"></div>
         `;
     }
 }
@@ -297,14 +304,11 @@ function iniciarPantallaSi(){
 
 // ================= PANTALLA FINAL =================
 function mostrarPantallaFinal(){
-    // eliminar palabras flotantes
     clearInterval(palabraInterval);
 
-    // mostrar imagen final con texto
     const slider = document.getElementById("slider");
     slider.innerHTML = `<img src="foto_final.jpg" class="active" style="width:100%;height:100%;object-fit:cover;">`;
 
-    // mensaje en medio
     document.getElementById("mainContainer").innerHTML=`
         <h1 style="font-size:1.5rem;margin-top:40vh;color:white;">Escríbeme en WhatsApp<br>MQC</h1>
     `;
