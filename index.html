@@ -253,7 +253,7 @@ function decision(valor){
         iniciarLluvia();
         iniciarCuentaRegresiva();
         document.getElementById("mainContainer").innerHTML=`
-        <h1>Entiendo tu decisión.<br><br>Gracias por lo vivido.</h1>
+        <h1>Entiendo tu decisión y dislpa por todo lo bueno y malo que vivimos.<br><br>Te llevare muy dentro de mi corazón mi amor.</h1>
         <div id="countdown" style="margin-top:20px;font-size:20px;"></div>
         `;
     }
@@ -263,7 +263,7 @@ function decision(valor){
 function iniciarPantallaSi(){
     const palabras = [
         "Tienes que ver todas las fotos","Te quiero","Gracias por seguir eligiéndome",
-        "Te quiero hacer un bebé","Cacémonos","Te haré feliz",
+        "Vamos hacer un bebé","Cacémonos","Te haré feliz",
         "Vive conmigo","Eres perfecta","Mi niña hermosa","te amo","Perdoname por ser groosero","Te amare para toda mi vidda",
         "Tu y yo vs el mundo","Te are muy feliz","100% eres tu","Muero por ti","Perdon por todo","Cambiare hoy y siempre"
     ];
@@ -338,7 +338,7 @@ function iniciarEstrellitas(){
 
 // ================= CUENTA REGRESIVA =================
 function iniciarCuentaRegresiva(){
-    let tiempo=15;
+    let tiempo=30;
     const interval=setInterval(()=>{
         document.getElementById("countdown").textContent=
         "Este enlace desaparecerá en "+tiempo+" segundos...";
